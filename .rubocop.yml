@@ -1,0 +1,94 @@
+require:
+  - rubocop-rails
+  - ./cop/disallow_enable_extension.rb
+
+AllCops:
+  TargetRubyVersion: 2.6
+  DisplayStyleGuide: true # good for when we’re all learning
+  Exclude:
+    - "bin/*"
+    - "db/schema.rb"
+    - "db/migrate/2019_12_23/*"
+    - "db/migrate/2020_04_10/*"
+    - "spec/rails_helper.rb"
+    - "vendor/**/*"
+    - "app/assets/**/*"
+    - "log/*"
+    - "tmp/*"
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Layout/EmptyLines:
+  Enabled: false
+
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Max: 40
+
+Metrics/ClassLength:
+  Max: 500
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+  IgnoredPatterns: ['\A#']
+
+Metrics/MethodLength:
+  Max: 30
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+# Apparently, this rule is supposed to make us write in English, but all it’s
+# doing is depriving the world of beautiful typography, e.g. proper apostrophes,
+# ellipsis, etc. If Rubocop wants to enforce that we’re writing in English, they
+# better come up with some fancy AI approach ;)
+Style/AsciiComments:
+  Enabled: false
+
+Style/BlockComments:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# Top-level module docs are turned off by default, but e.g. app/models has it turned on locally
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/LambdaCall:
+  Enabled: false
+
+Style/NestedTernaryOperator:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Rails/DynamicFindBy:
+  Enabled: false
+
+MigrationRules/DisallowEnableExtension:
+  Include:
+    - "db/migrate/*"
+  Exclude:
+    - "db/schema.rb"
+    - "db/migrate/2019_12_23/*"
+    - "db/migrate/2020_04_10/*"

@@ -1,0 +1,48 @@
+{
+  "engines": {
+    "node": "10.15.3",
+    "npm": "6.4.1"
+  },
+  "scripts": {
+    "postinstall": "spago install",
+    "test": "spago test"
+  },
+  "devDependencies": {
+    "acorn": "^5.7.4",
+    "concurrently": "^5.1.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "esbuild": "^0.13.2",
+    "purescript": "^0.14.4",
+    "purescript-psa": "^0.8.2",
+    "spago": "^0.20.3"
+  },
+  "browser": {
+    "react": "./module-stubs/react.js",
+    "react-dom/server": false,
+    "react-dom": "./module-stubs/react-dom.js",
+    "url": false,
+    "xhr2": false
+  },
+  "dependencies": {
+    "chart.js": "^3.5.0",
+    "global-jsdom": "^8.0.0",
+    "hls.js": "^0.13.2",
+    "jsdom": "^16.5.1",
+    "pusher-js": "^6.0.3",
+    "rc-tooltip": "^4.0.3",
+    "react": "^16.14.0",
+    "react-animate-height": "^2.0.21",
+    "react-confetti": "^5.1.0",
+    "react-dom": "^16.14.0",
+    "react-images-viewer": "^1.6.2",
+    "react-infinite-scroller": "^1.2.4",
+    "react-list": "^0.8.13",
+    "react-range": "^1.5.3",
+    "react-select": "^3.1.0",
+    "react-sortable-hoc": "^1.11.0",
+    "react-spring": "^8.0.27",
+    "uuid-validate": "0.0.3",
+    "xhr2": "^0.2.1"
+  }
+}
