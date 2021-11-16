@@ -1,0 +1,26 @@
+!!!
+%html
+  %head
+    %meta{content: "text/html; charset=UTF-8", "http-equiv": "Content-Type"}
+    %meta{content: "width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no", name: "viewport"}
+    - if content_for? :no_index
+      %meta{content: "noindex,nofollow", name: "robots"}
+    %meta{name: "apple-mobile-web-app-title", content: "CollegeVine"}
+
+    %title Launchpad
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag '/theme/fonts/feather/feather.min'
+    = stylesheet_link_tag '/theme/css/theme.min'
+
+  %body
+    = yield
+
+    = javascript_include_tag "/theme/libs/jquery/dist/jquery.min.js"
+    = javascript_include_tag "/theme/libs/bootstrap/dist/js/bootstrap.bundle.min.js"
+    = render "layouts/javascript/client_api_endpoints"
+    = render "layouts/javascript/assets_root"
+    = yield :page_scripts
+
+

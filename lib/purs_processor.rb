@@ -14,6 +14,7 @@ class PursProcessor
         s.register_preprocessor MIME_TYPE, PursProcessor unless s.processors[MIME_TYPE]&.include? PursProcessor
       end
 
+      puts "PursProcessor initialized"
       PursProcessor.ensure_environment force_log: true, only_when_clean: true
     end
 

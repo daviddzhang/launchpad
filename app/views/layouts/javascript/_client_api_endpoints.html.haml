@@ -1,0 +1,64 @@
+-# This partial defines a function `window.CV.pathInfo`, which is then called
+-# by the client-side PureScript code (see Utils/API.js) to obtain an endpoint
+-# path by name. These paths are supposed to be pre-loaded by server-side code
+-# by calling `ApplicationController.client_side_endpoints`. If the server-side
+-# code doesn't do that, then the client-side code will fail at initialization
+-# time, and this failure is treated differently depending on the environment:
+-# in prod we swallow it and silently report to Sentry, but in test or dev we
+-# display a big red warning about it, so the developer can go and fix it.
+
+-# Using `@view_helper_react_included` as a proxy for whether there is any
+-# client-side code on the page that might require endpoints.
+- if @view_helper_react_included
+  :javascript
+    window.CV = window.CV || {}
+
+    window.CV.pathInfo = function(name) {
+      const path = window.CV.pathInfo.endpoints[name]
+      if (!path) {
+        window.CV.pathInfo.missingPath(name)
+        return
+      }
+
+      return { path, token: '#{form_authenticity_token}' }
+    }
+
+    window.CV.pathInfo.endpoints = #{(@client_api_endpoints || {}).to_json.html_safe}
+
+    window.CV.apiEndpoint = function({ name, continuation }) {
+      return continuation(window.CV.pathInfo(name))
+    }
+
+  - if Rails.env.production?
+    -# In production, a missing endpoint would be silently reported to Sentry.
+    :javascript
+      window.CV.pathInfo.missingPath = function(name) {
+        console.error("Missing API endpoint", name)
+        if (typeof window.Sentry !== "undefined") {
+          window.Sentry.captureException(new Error("Missing API endpoint"), { extra: { name } })
+        }
+      }
+
+  - elsif Rails.env.development? || Rails.env.test?
+    -# In dev/test, a missing endpoint causes a big red message on the screen.
+    .d-none.position-absolute.z-index-popover.p-6#missing-api-endpoint{ style: "top: 0; left: 0; right: 0" }
+      .card.border-danger.border-3
+        .card-body
+          %h1.text-danger
+            Missing API endpoint:
+            %span.t--missing-endpoint-name
+
+          %p
+            The client-side code needs access to API endpoint
+            %code.t--missing-endpoint-name
+            , but it wasn't defined.
+
+          %p
+            Did you forget to call the <code>client_side_endpoints</code> helper?
+
+    :javascript
+      window.CV.pathInfo.missingPath = function(name) {
+        console.error("Missing API endpoint", name)
+        $("#missing-api-endpoint").removeClass('d-none')
+        $(".t--missing-endpoint-name").text(name)
+      }

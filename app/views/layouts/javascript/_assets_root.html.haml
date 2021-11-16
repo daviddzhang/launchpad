@@ -1,0 +1,12 @@
+-# This file inserts the path to whence our assets are served: on local dev
+-# environments it's just the domain root, but in production our assets are
+-# served from a CDN. The PureScript code can then pick up this value and use to
+-# render e.g. images or other assets.
+-#
+-# Using `@view_helper_react_included` as a proxy for whether there is any
+-# client-side code on the page that might require the assets root.
+- if @view_helper_react_included
+  :javascript
+    window.CV = window.CV || {}
+    window.CV.assetsRoot = '#{asset_path('/img/cv-logo.svg').sub('/img/cv-logo.svg', '/')}'
+
