@@ -1,6 +1,5 @@
 require:
   - rubocop-rails
-  - ./cop/disallow_enable_extension.rb
 
 AllCops:
   TargetRubyVersion: 2.6
@@ -84,11 +83,3 @@ Style/WordArray:
 
 Rails/DynamicFindBy:
   Enabled: false
-
-MigrationRules/DisallowEnableExtension:
-  Include:
-    - "db/migrate/*"
-  Exclude:
-    - "db/schema.rb"
-    - "db/migrate/2019_12_23/*"
-    - "db/migrate/2020_04_10/*"

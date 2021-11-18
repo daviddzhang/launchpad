@@ -139,7 +139,7 @@ class NodeServer
       input.close
       output.close
       ::Process.kill("HUP", pid)
-    rescue StandardError # rubocop:disable Lint/HandleExceptions
+    rescue StandardError
       # An error sometimes happens here when the Node process is already gone
       # because it was killed by the console as a result of hitting Ctrl+C
     end
