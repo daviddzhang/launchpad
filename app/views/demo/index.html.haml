@@ -1,4 +1,15 @@
-.h3
-  Hi
-
-  = frontend_component "Demo", props: {message: "Hi from Purescript"}
+.container.text-center
+  .row.bg-light.mt-8
+    .col-12.col-md-6.col-lg-6
+      .card.my-2
+        .card-body
+          .row
+            .col
+              .h3
+                Hi from HAML
+    .col-12.col-md-6.col-lg-6
+      .card.my-2
+        .card-body
+          .row
+            .col
+              = frontend_component "Demo", props: {message: "Hi from Purescript"}
