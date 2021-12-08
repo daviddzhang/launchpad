@@ -18,8 +18,8 @@ Once you've followed these steps, you should have an empty application running o
 If you're seeing a pair of "hello" messages, you're good to get started!
 
 ### Building the app
-1. Create a landing page
-2. Create a layout
+1. [Create a landing page](tasks/landing_page.md)
+2. [Create a layout](tasks/layout.md)
 3. Create a Rails form for making a post using the layout
 4. Add tests for the create-post form
 5. Update the landing page to list all of the posts & titles, with links to the content
