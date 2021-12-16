@@ -23,6 +23,15 @@ The first column should contain the pretty image from the first part of the exer
 Example:
 ![styling_demo](../tasks/demos/styling_demo.gif)
 
+### Passing variables into your landing page
+
+What if we want to pass in more complex data into the page, say from our database, or the current logged-in user's first name?
+In Rails, this can be done with controller-instance variables. Variables within a function with an `@` attached in the beginning can be utilized in the view.
+In this case, try the following: show the current date and time on the page. It should change when you reload the page at a different time.
+
+Example:
+![controller_instance_variables_demo](../tasks/demos/controller_instance_variables_demo.png)
+
 ### Getting help
 Take the next 30 minutes and read through the [Rails quickstart](https://guides.rubyonrails.org/getting_started.html) if you're unfamiliar with Rails.
 For the second part, take some time to delve into Bootstrap's [grid system](https://getbootstrap.com/docs/5.1/layout/grid/).
