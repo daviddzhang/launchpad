@@ -11,7 +11,7 @@ This works pretty well, but we often find ourselves teaching new engineers how a
 Our goal is to get you productive and confident as quickly as we can, and our hope is that this code lab teaches you the basics of the tools and techniques you'll use every day as a CollegeVine engineer.
 
 ### Getting started
-To get started, follow the instructions in our [app's readme](https://github.com/collegevine/app#readme), skipping steps 3, 5, 6, 7 and 10. 
+To get started, follow the instructions in our [app's readme](https://github.com/collegevine/app#readme), skipping steps 3, 5, 6, 7 and 10.
 Skip steps 5-7 because they deal with loading the website's configuration, and this lab does not require any external configuration.
 
 Once you've followed these steps, run `bin/rails server`. You should have an empty application running on `http://localhost:3000` that looks like this:
@@ -22,7 +22,7 @@ You're good to get started!
 ### Building the app
 1. [Create a landing page](tasks/landing_page.md)
 2. [Create a layout](tasks/layout.md)
-3. Create a Rails form for making a post using the layout
+3. [Create a Rails form](tasks/creating_a_post.md) for making a post using the layout
 4. Add tests for the create-post form
 5. Update the landing page to list all the posts & titles, with links to the content
 6. Create an inline form on posts that lets you comment without reloading the page, using Elmish
