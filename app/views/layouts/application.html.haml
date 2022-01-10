@@ -15,7 +15,7 @@
     = stylesheet_link_tag '/theme/css/theme.min'
 
   %body
-    = yield
+    = render "layouts/layout"
 
     = javascript_include_tag "/theme/libs/jquery/dist/jquery.min.js"
     = javascript_include_tag "/theme/libs/bootstrap/dist/js/bootstrap.bundle.min.js"
