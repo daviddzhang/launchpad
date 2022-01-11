@@ -12,13 +12,7 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = Post.new(post_params)
-
-    if @post.save
-      redirect_to @post
-    else
-      render :new, status: :unprocessable_entity
-    end
+    @post = Post.create!(post_params)
   end
 
   def edit
@@ -28,11 +22,7 @@ class PostsController < ApplicationController
   def update
     @post = Post.find(params[:id])
 
-    if @post.update(post_params)
-      redirect_to @post
-    else
-      render :edit, status: :unprocessable_entity
-    end
+    @post.update!(post_params)
   end
 
   private
