@@ -1,0 +1,6 @@
+%ul
+  - posts.each do |post|
+    %li
+      = link_to post.title, post_path(post.id), class: "h4"
+      = link_to " | Edit", edit_post_path(post.id)
+      %p= post.text
