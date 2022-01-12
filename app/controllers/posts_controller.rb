@@ -4,7 +4,20 @@ class PostsController < ApplicationController
   end
 
   def show
+    client_side_endpoints(
+      :create_comment_path
+    )
+
     @post = Post.find(params[:id])
+    @comments_props = {
+      postId: @post.id,
+      comments: @post.comments.all.map do |comment|
+        {
+          commenter: comment.commenter,
+          comment: comment.comment
+        }
+      end
+    }
   end
 
   def new
