@@ -10,7 +10,7 @@ import Effect.Aff (Aff)
 import Data.Int as Int
 import Data.Array as Array
 import Data.Maybe (Maybe(..))
-import Elmish (BootRecord, ComponentDef, Dispatch, ReactElement, Transition, handleMaybe, forkVoid)
+import Elmish (BootRecord, ComponentDef, Dispatch, ReactElement, Transition, handleMaybe, forkVoid, fork)
 import Elmish.Foreign (Foreign)
 import Elmish.HTML.Styled as H
 import Utils.Boot (bootOrPanic)
@@ -71,13 +71,14 @@ def props =
           { commenter = updatedCommenter }
         
     update state Create = do
-        forkVoid (createComment props.postId state.commenter state.newComment)
-        pure state 
-          {
-            comments = Array.snoc state.comments { commenter: state.commenter, comment: state.newComment, upvotes: 0, downvotes: 0, id: 1 + (Array.length state.comments) }
-          , commenter = ""
-          , newComment = ""
-          }
+        fork 
+          pure state 
+            {
+              comments = Array.snoc state.comments { commenter: state.commenter, comment: state.newComment, upvotes: 0, downvotes: 0, id: _ }
+            , commenter = ""
+            , newComment = ""
+            } <$> (createComment props.postId state.commenter state.newComment)
+        
 
     update state (Upvote commentId) = do
       forkVoid (upvoteComment commentId)
@@ -148,9 +149,11 @@ def props =
             "Create"
         ]   
 
-createComment :: Int -> String -> String -> Aff Unit
+createComment :: Int -> String -> String -> Aff Int
 createComment = API.post "create_comment_path" \call postId commenter comment -> 
-  call { postId: postId, commenter, comment } >>= API.ignoreResponse
+  call { postId: postId, commenter, comment } 
+  >>= API.parseResponse \f ->
+    API.tryReadForeign "comment id" f
 
 upvoteComment :: Int -> Aff Unit
 upvoteComment = API.post "upvote_comment_path" \call commentId ->

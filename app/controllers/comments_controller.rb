@@ -1,7 +1,8 @@
 class CommentsController < ApplicationController
   def create
     post = Post.find_by(id: params[:postId])
-    post.comments.create!(commenter: params[:commenter], comment: params[:comment])
+    comment = post.comments.create!(commenter: params[:commenter], comment: params[:comment])
+    render json: comment.id
   end
 
   def upvote
