@@ -78,7 +78,8 @@ def props =
                                                 [ H.text comment.comment ]
                                               , H.div "row"
                                                 [ H.text comment.commenter ] 
-                                              ]) <$> state.comments
+                                              ]
+                                ) <$> state.comments
 
                               , H.input_ "row" 
                                 { type: "text"

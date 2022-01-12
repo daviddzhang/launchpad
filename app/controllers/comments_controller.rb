@@ -1,7 +1,3 @@
 class CommentsController < ApplicationController
-  def index
-    client_side_endpoints(
-      
-    )
-  end
+  def index; end
 end
