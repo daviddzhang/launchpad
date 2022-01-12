@@ -4,14 +4,15 @@ module EntryPoints.Comments
 
 import Prelude
 
+import Effect.Aff (Aff)
 import Data.Array as Array
 import Data.Maybe (Maybe(..))
-import Elmish (BootRecord, ComponentDef, Dispatch, ReactElement, Transition, handleMaybe)
+import Elmish (BootRecord, ComponentDef, Dispatch, ReactElement, Transition, handleMaybe, forkVoid)
 import Elmish.Foreign (Foreign)
 import Elmish.HTML.Styled as H
 import Utils.Boot (bootOrPanic)
 import Utils.HTML (eventTargetValue)
--- import Utils.API as API
+import Utils.API as API
 
 boot :: BootRecord Foreign
 boot = bootOrPanic
@@ -26,6 +27,7 @@ data Message
 
 type Props =
   { comments :: Array Comment
+  , postId :: Int
   }
 
 type Comment = 
@@ -52,16 +54,16 @@ def props =
 
 
     update :: State -> Message -> Transition Message State
-    update state = case _ of
-      CommentTextChanged updatedComment ->
+    update state (CommentTextChanged updatedComment) = do
         pure state 
           { newComment = updatedComment }
 
-      CommenterChanged updatedCommenter ->
+    update state (CommenterChanged updatedCommenter) = do
         pure state 
           { commenter = updatedCommenter }
         
-      Create ->
+    update state Create = do
+        forkVoid (createComment props.postId state.commenter state.newComment)
         pure state 
           {
             comments = Array.snoc state.comments { commenter: state.commenter, comment: state.newComment }
@@ -99,3 +101,7 @@ def props =
             { onClick: dispatch Create } 
             "Create"
         ]   
+
+createComment :: Int -> String -> String -> Aff Unit
+createComment = API.post "create_comment_path" \call postId commenter comment -> 
+  call { postId: postId, commenter, comment } >>= API.ignoreResponse
