@@ -5,7 +5,9 @@ class PostsController < ApplicationController
 
   def show
     client_side_endpoints(
-      :create_comment_path
+      :create_comment_path,
+      :upvote_comment_path,
+      :downvote_comment_path
     )
 
     @post = Post.find(params[:id])
@@ -14,7 +16,10 @@ class PostsController < ApplicationController
       comments: @post.comments.all.map do |comment|
         {
           commenter: comment.commenter,
-          comment: comment.comment
+          comment: comment.comment,
+          upvotes: comment.upvotes,
+          downvotes: comment.downvotes,
+          id: comment.id
         }
       end
     }

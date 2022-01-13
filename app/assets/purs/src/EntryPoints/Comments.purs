@@ -1,6 +1,8 @@
 module EntryPoints.Comments
-  ( boot
-  ) where
+  ( Comment
+  , boot
+  )
+  where
 
 import Prelude
 
@@ -24,6 +26,8 @@ data Message
   = Create
   | CommentTextChanged String
   | CommenterChanged String
+  | Upvote Int
+  | Downvote Int
 
 type Props =
   { comments :: Array Comment
@@ -33,6 +37,9 @@ type Props =
 type Comment = 
   { commenter :: String 
   , comment :: String 
+  , upvotes :: Int
+  , downvotes :: Int
+  , id :: Int
   }
 
 type State = 
@@ -66,10 +73,34 @@ def props =
         forkVoid (createComment props.postId state.commenter state.newComment)
         pure state 
           {
-            comments = Array.snoc state.comments { commenter: state.commenter, comment: state.newComment }
+            comments = Array.snoc state.comments { commenter: state.commenter, comment: state.newComment, upvotes: 0, downvotes: 0, id: 1 + (Array.length state.comments) }
           , commenter = ""
           , newComment = ""
           }
+
+    update state (Upvote commentId) = do
+      forkVoid (upvoteComment commentId)
+      pure state
+        {
+          comments = 
+            (\comment ->
+              comment { upvotes = 
+                        (if comment.id == commentId then comment.upvotes + 1 else comment.upvotes) 
+                      }
+            ) <$> state.comments
+        }
+
+    update state (Downvote commentId) = do
+      forkVoid (downvoteComment commentId)
+      pure state
+        {
+          comments = 
+            (\comment ->
+              comment { downvotes = 
+                        (if comment.id == commentId then comment.downvotes + 1 else comment.downvotes) 
+                      }
+            ) <$> state.comments
+        }
 
     view :: State -> Dispatch Message -> ReactElement
     view state dispatch = 
@@ -81,6 +112,20 @@ def props =
                             [ H.text comment.comment ]
                           , H.div "row"
                             [ H.text comment.commenter ] 
+                          , H.div "row"
+                            [ H.text $ "Upvotes:" <> show comment.upvotes
+                            , H.button_ 
+                                "btn btn-secondary"
+                                { onClick: dispatch $ Upvote comment.id }
+                                "Upvote"
+                            ]
+                          , H.div "row"
+                            [ H.text $ "Downvotes:" <> show comment.downvotes
+                            , H.button_ 
+                                "btn btn-secondary"
+                                { onClick: dispatch $ Downvote comment.id }
+                                "Downvote"
+                            ]
                           ]
             ) <$> state.comments
 
@@ -105,3 +150,11 @@ def props =
 createComment :: Int -> String -> String -> Aff Unit
 createComment = API.post "create_comment_path" \call postId commenter comment -> 
   call { postId: postId, commenter, comment } >>= API.ignoreResponse
+
+upvoteComment :: Int -> Aff Unit
+upvoteComment = API.post "upvote_comment_path" \call commentId ->
+  call { commentId } >>= API.ignoreResponse
+
+downvoteComment :: Int -> Aff Unit
+downvoteComment = API.post "downvote_comment_path" \call commentId ->
+  call { commentId } >>= API.ignoreResponse
