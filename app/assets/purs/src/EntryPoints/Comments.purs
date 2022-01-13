@@ -7,7 +7,6 @@ module EntryPoints.Comments
 import Prelude
 
 import Effect.Aff (Aff)
-import Data.Int as Int
 import Data.Array as Array
 import Data.Maybe (Maybe(..))
 import Elmish (BootRecord, ComponentDef, Dispatch, ReactElement, Transition, handleMaybe, forkVoid)
@@ -114,14 +113,14 @@ def props =
                           , H.div "row"
                             [ H.text comment.commenter ] 
                           , H.div "row"
-                            [ H.text $ "Upvotes:" <> Int.toStringAs Int.decimal comment.upvotes
+                            [ H.text $ "Upvotes:" <> show comment.upvotes
                             , H.button_ 
                                 "btn btn-secondary"
                                 { onClick: dispatch $ Upvote comment.id }
                                 "Upvote"
                             ]
                           , H.div "row"
-                            [ H.text $ "Downvotes:" <> Int.toStringAs Int.decimal comment.downvotes
+                            [ H.text $ "Downvotes:" <> show comment.downvotes
                             , H.button_ 
                                 "btn btn-secondary"
                                 { onClick: dispatch $ Downvote comment.id }
